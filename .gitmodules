@@ -1,0 +1,3 @@
+[submodule "vendor/shoulda"]
+	path = vendor/shoulda
+	url = git://github.com/rotuka/shoulda-gem.git
