@@ -1,5 +1,5 @@
 $:.unshift File.dirname(__FILE__)
+require 'rubygems'
+require 'grit'
 
-module Hive
-  
-end
+require 'hive/base.rb'
