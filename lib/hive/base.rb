@@ -14,7 +14,7 @@ module Hive
     
     # count the number of cells in this hive
     def [](cell_name)
-      cell = Cell.select_or_create_cell(cell_name, self.repo)
+      cell = Cell.select_or_create_cell(cell_name, self)
       
     end
     
