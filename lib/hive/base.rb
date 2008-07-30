@@ -25,7 +25,6 @@ module Hive
     end
     
     def select_or_create_repository
-      FileUtils::mkdir_p(self.directory)
       tried_repo = Grit::Repo.new(self.directory, :is_bare=>true)
       self.repo = tried_repo
       return
@@ -36,9 +35,8 @@ module Hive
     end
     
     def create_repository
-        FileUtils::mkdir_p(self.directory)
-        tried_repo = Grit::Repo.init_bare(self.directory)
-        self.repo = tried_repo
+      FileUtils::mkdir_p(self.directory)
+      self.repo = Grit::Repo.init_bare(self.directory, {:bare=>true}, {:is_bare=>true})
     end
   end
 end

@@ -4,7 +4,7 @@ require 'yaml'
 require 'fileutils'
 require 'digest/sha1'
 require File.dirname(__FILE__) + '/../vendor/grit/lib/grit'
-Grit.debug = true
+# Grit.debug = true
 require 'hive/schema.rb'
 require 'hive/cell.rb'
 require 'hive/base.rb'

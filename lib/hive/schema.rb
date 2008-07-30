@@ -1,7 +1,6 @@
 module Hive
   module Schema
     def check_repository_schema
-      return
       schema = self.repo.tree/'hive_schema'
       schema = build_schema if schema.nil?
     end

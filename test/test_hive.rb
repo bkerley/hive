@@ -34,10 +34,9 @@ class TestHive < Test::Unit::TestCase
       new_hive = Hive::Base.new(@hive_dir, 'test_user')
       assert_instance_of Hive::Base, new_hive
     end
-    context 'but a directory' do
+    context 'but an existing hive' do
       setup do
-        FileUtils::rm_rf(@hive_dir)
-        FileUtils::mkdir_p(@hive_dir)
+        Hive::Base.new(@hive_dir, 'test_user')
       end
       
       should 'make a new hive' do
