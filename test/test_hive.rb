@@ -21,6 +21,20 @@ class TestHive < Test::Unit::TestCase
       test_cell = @hive['test']
       assert_kind_of Hash, test_cell
     end
+    
+    context 'with a new cell' do
+      setup do
+        @cell = @hive['test2']
+      end
+      
+      should 'be assignable and save' do
+        @cell[:awesome] = true
+        assert_equal true, @cell[:awesome]
+        @cell.save
+        c = @hive['test2']
+        assert_equal true, c[:awesome]
+      end
+    end
   end
   
   context 'with nothing' do
