@@ -41,6 +41,7 @@ class TestHive < Test::Unit::TestCase
           @cell.save
         end
         assert_kind_of Array, @cell.history
+        assert_equal 3, @cell.history.length
       end
     end
   end
