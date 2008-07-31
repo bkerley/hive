@@ -42,6 +42,18 @@ class TestHive < Test::Unit::TestCase
         end
         assert_kind_of Array, @cell.history
         assert_equal 3, @cell.history.length
+        (1..10).each do |n|
+          @cell[:number] = n
+          @cell[n] = 'number!'
+          @cell.save
+        end
+        assert_equal 10, @cell[:number]
+        assert_equal true, @cell['spiffy']
+        (1..10).each do |n|
+          assert_equal 'number!', @cell[n]
+        end
+        
+        assert_equal 13, @cell.history.length
       end
     end
   end
