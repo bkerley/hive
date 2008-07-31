@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/test_helper.rb")
 
 class TestHive < Test::Unit::TestCase
   
-  context 'a new hive' do
+  context 'a hive' do
     setup do
       hive_dir = File.expand_path(File.dirname(__FILE__) + "/../tmp/test_dir")
       @hive = Hive::Base.new(hive_dir, 'test_user')
@@ -22,7 +22,7 @@ class TestHive < Test::Unit::TestCase
       assert_kind_of Hash, test_cell
     end
     
-    context 'with a new cell' do
+    context 'with a cell' do
       setup do
         @cell = @hive['test2']
       end
@@ -33,6 +33,14 @@ class TestHive < Test::Unit::TestCase
         @cell.save
         c = @hive['test2']
         assert_equal true, c[:awesome]
+      end
+      
+      should 'have a history' do
+        %w{cool neat spiffy}.each do |w|
+          @cell[w] = true
+          @cell.save
+        end
+        assert_kind_of Array, @cell.history
       end
     end
   end
