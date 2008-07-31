@@ -36,5 +36,9 @@ module Hive
       i.add(self.filename, serialized)
       i.commit("Saved #{self.name}")
     end
+    
+    def history
+      self.hive.repo.tree.contents.select { |c| c.name == self.filename }
+    end
   end
 end
