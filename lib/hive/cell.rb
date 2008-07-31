@@ -34,11 +34,13 @@ module Hive
       serialized = YAML::dump(self)
       i = self.hive.repo.index
       i.add(self.filename, serialized)
-      i.commit("Saved #{self.name}")
+      parent = self.hive.repo.commits.last.id
+      prev_tree = self.hive.repo.commits.first.tree.id
+      i.commit("Saved #{self.name}", [parent], self.hive.actor, prev_tree)
     end
     
     def history
-      self.hive.repo.tree.contents.select { |c| c.name == self.filename }
+      self.hive.repo.commits.map{|c|c.tree.contents}.flatten.select{|c|c.name == self.filename}
     end
   end
 end
