@@ -18,6 +18,10 @@ module Hive
       
     end
     
+    def history
+      self.repo.commits('master', false)
+    end
+    
     private
     
     def file_for_cell(cell_name)

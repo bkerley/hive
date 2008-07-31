@@ -40,7 +40,7 @@ module Hive
     end
     
     def history
-      self.hive.repo.commits.map{|c|c.tree.contents}.flatten.select{|c|c.name == self.filename}
+      self.hive.history.map{|c|c.tree.contents}.flatten.select{|c|c.name == self.filename}
     end
   end
 end
