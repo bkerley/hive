@@ -56,6 +56,25 @@ class TestHive < Test::Unit::TestCase
         assert_equal 13, @cell.history.length
       end
     end
+    
+    should 'not be prone to paradoxes' do
+      @alpha = @hive['test3']
+      @alpha['FISSION'] = 'MAILED'
+      @alpha.save
+      @beta = @hive['test3']
+      assert_equal 'MAILED', @alpha['FISSION']
+      assert_equal 'MAILED', @beta['FISSION']
+      
+      @alpha['ocelot'] = 'alive'
+      @beta['shalashaska'] = 'dead'
+      @beta.save
+      @alpha.save
+      
+      @gamma = @hive['test3']
+      
+      assert_equal 'dead', @gamma['shalashaska']
+      assert_equal 'alive', @gamma['ocelot']
+    end
   end
   
   context 'with nothing' do
