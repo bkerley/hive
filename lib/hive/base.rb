@@ -4,6 +4,8 @@ module Hive
     attr_accessor :username
     attr_accessor :actor
     attr_accessor :repo
+    
+    # create or open the Hive::Base from the specified +directory+, and use +username+ for commit messages
     def initialize(directory, username)
       self.directory = directory
       self.username = username
@@ -12,7 +14,7 @@ module Hive
       check_repository_schema
     end
     
-    # count the number of cells in this hive
+    # return the Hive::Cell with the given name
     def [](cell_name)
       cell = Cell.select_or_create_cell(cell_name, self)
       
