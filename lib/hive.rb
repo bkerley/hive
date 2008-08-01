@@ -9,3 +9,6 @@ require 'hive/schema.rb'
 require 'hive/cell.rb'
 require 'hive/base.rb'
 Hive::Base.send(:include, Hive::Schema)
+module Hive
+  VERSION = '1'
+end

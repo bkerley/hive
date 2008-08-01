@@ -18,6 +18,7 @@ module Hive
       
     end
     
+    # history of the entire hive
     def history
       self.repo.commits('master', false)
     end
