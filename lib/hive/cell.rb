@@ -34,6 +34,7 @@ module Hive
       super()
     end
     
+    # Merges in changes from the hive as it is right now (will clobber changed and unsaved fields)
     def reload
       self.parent = hive.repo.commits.last.id
       self.tree   = hive.repo.tree.id
@@ -41,6 +42,7 @@ module Hive
       self.update YAML::load(file.data)
     end
     
+    # Saves and attempts to merge in changes since the last reload or creation of this cell
     def save
       my_parent = self.parent
       existing_parent = hive.repo.commits.last.id
@@ -68,6 +70,7 @@ module Hive
       self.reload
     end
     
+    # Returns an array of this file's historic blobs
     def history
       self.hive.history.map{|c|c.tree.contents}.flatten.select{|c|c.name == self.filename}
     end
