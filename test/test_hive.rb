@@ -67,8 +67,8 @@ class TestHive < Test::Unit::TestCase
       
       @alpha['ocelot'] = 'alive'
       @beta['shalashaska'] = 'dead'
-      @beta.save
       @alpha.save
+      @beta.save
       
       @gamma = @hive['test3']
       
