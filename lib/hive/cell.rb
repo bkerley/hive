@@ -35,6 +35,8 @@ module Hive
     end
     
     def reload
+      self.parent = hive.repo.commits.last.id
+      self.tree   = hive.repo.tree.id
       file = self.hive.repo.tree/self.filename
       self.update YAML::load(file.data)
     end
