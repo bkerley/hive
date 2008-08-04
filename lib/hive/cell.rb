@@ -36,16 +36,31 @@ module Hive
     
     def reload
       file = self.hive.repo.tree/self.filename
-      self.merge YAML::load(file.data)
+      self.update YAML::load(file.data)
     end
     
     def save
-      serialized = YAML::dump(self)
-      i = self.hive.repo.index
-      i.add(self.filename, serialized)
-      parent = self.parent
+      my_parent = self.parent
+      existing_parent = hive.repo.commits.last.id
+      existing_tree = hive.repo.tree
+      parent_arr = [my_parent]
       prev_tree = self.tree
-      i.commit("Saved #{self.name}", [parent], self.hive.actor, prev_tree)
+      
+      i = self.hive.repo.index
+      i.add(self.filename, YAML::dump(self))
+      i.commit("Saved #{self.name}", parent_arr, self.hive.actor, prev_tree)
+      
+      if parent != existing_parent
+        new_tree = hive.repo.tree.id
+        parent_arr = [parent, existing_parent]
+        file = existing_tree/self.filename
+        existing_hash = YAML::load(file.data)
+        self.update existing_hash
+        i = self.hive.repo.index
+        i.add(self.filename, YAML::dump(self))
+        i.commit("Merged #{self.name}", parent_arr, self.hive.actor, new_tree)
+      end
+      
       self.parent = hive.repo.commits.last.id
       self.tree   = hive.repo.tree.id
       self.reload
@@ -53,6 +68,12 @@ module Hive
     
     def history
       self.hive.history.map{|c|c.tree.contents}.flatten.select{|c|c.name == self.filename}
+    end
+    
+    def inspect
+      hash_inspect = super
+      name_portion = self.name ? %Q{"#{self.name}"@"#{self.filename}"} : 'UNTITLED'
+      %Q{#<Hive::Cell #{name_portion} #{hash_inspect}>}
     end
   end
 end
