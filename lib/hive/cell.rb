@@ -50,7 +50,7 @@ module Hive
       i.add(self.filename, YAML::dump(self))
       i.commit("Saved #{self.name}", parent_arr, self.hive.actor, prev_tree)
       
-      if parent != existing_parent
+      if my_parent != existing_parent
         new_tree = hive.repo.tree.id
         parent_arr = [parent, existing_parent]
         file = existing_tree/self.filename
