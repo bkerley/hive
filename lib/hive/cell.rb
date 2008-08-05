@@ -39,7 +39,7 @@ module Hive
       self.parent = hive.repo.commits.last.id
       self.tree   = hive.repo.tree.id
       file = self.hive.repo.tree/self.filename
-      self.update YAML::load(file.data)
+      self.merge_over YAML::load(file.data)
     end
     
     # Saves and attempts to merge in changes since the last reload or creation of this cell
@@ -59,7 +59,7 @@ module Hive
         parent_arr = [parent, existing_parent]
         file = existing_tree/self.filename
         existing_hash = YAML::load(file.data)
-        self.update existing_hash
+        self.merge_over existing_hash
         i = self.hive.repo.index
         i.add(self.filename, YAML::dump(self))
         i.commit("Merged #{self.name}", parent_arr, self.hive.actor, new_tree)
@@ -73,6 +73,11 @@ module Hive
     # Returns an array of this file's historic blobs
     def history
       self.hive.history.map{|c|c.tree.contents}.flatten.select{|c|c.name == self.filename}
+    end
+    
+    # Instead of replacing my values with the given hash, only load values I don't have.
+    def merge_over(hash)
+      self.replace(hash.merge(self))
     end
     
     def inspect
